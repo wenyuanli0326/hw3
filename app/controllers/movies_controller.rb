@@ -1,5 +1,6 @@
-class MoviesController < ApplicationController
+# frozen_string_literal: true
 
+class MoviesController < ApplicationController
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -37,33 +38,31 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
-  
-  def show_by_director      #controller using the same name with html file
-    
+
+  # controller using the same name with html file
+  def show_by_director
     @movie = Movie.find(params[:id])
-    
+
     if @movie.director.present?
-        @movies_with_same_director = Movie.search_movies_by_director @movie.id 
-        #director: @movie.director).where.not(id: @movie.id)
-#        @movies = Movie.find_with_same_director(@movie.id)
-        
-        # if @movies_with_same_director == nil or @movies_with_same_director.empty?
-        #     flash[:notice] = "Sorry, no movies with same director."
-        #     redirect_to movies_path
-        # else
-        #     #redirect_to find_same_director_path
-            
-        # end
+      @movies_with_same_director = Movie.search_movies_by_director @movie.id
+    # director: @movie.director).where.not(id: @movie.id)
+    #        @movies = Movie.find_with_same_director(@movie.id)
+
+    # if @movies_with_same_director == nil or @movies_with_same_director.empty?
+    #     flash[:notice] = "Sorry, no movies with same director."
+    #     redirect_to movies_path
+    # else
+    #     #redirect_to find_same_director_path
+
+    # end
     else
-        flash[:notice] = "Sorry, this movie does not have a director."
-        redirect_to movies_path
+      flash[:notice] = 'Sorry, this movie does not have a director.'
+      redirect_to movies_path
     end
-    
   end
-    
-        
 
   private
+
   # Making "internal" methods private is not required, but is a common practice.
   # This helps make clear which methods respond to requests, and which ones do not.
   def movie_params
