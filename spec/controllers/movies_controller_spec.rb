@@ -51,12 +51,19 @@ RSpec.describe MoviesController, type: :controller do
       # expect([m.title for m in assigns(:movies_with_same_director){}]).to eq('Apocalypse Now')
       titleList = []
       assigns(:movies_with_same_director).each{ |m| titleList << m.title}
-      expect(titleList).to eq(['Apocalypse Now'])
+      expect(titleList).to eq(['Apocalypse Now', 'The Conversation'])
       Movie.find_by(:title => "The Godfather").destroy
     end
     
-    it "redirects to index with a warning when no director is present"
+    it "redirects to index with a warning when no director is present" do
       # TODO(student): implement this test
+        movie = Movie.create(:title => "noDirectorTest",
+          :rating => "PG", :release_date => "1972-5-30")
+        get :show_by_director, params: { id: movie.id, movie: movie }
+        expect(response).to redirect_to movies_path
+        expect(flash[:notice]).to match(/Sorry, this movie does not have a director./)
+        Movie.find_by(:title => "noDirectorTest").destroy
+    end
   end
   
   describe "creates" do

@@ -20,9 +20,15 @@ RSpec.describe Movie, type: :model do
                    :director => "Frank Darabont")
     end
     
-    if Movie.where(:title => "The Godfather").empty?
-      Movie.create(:title => "The Godfather",
-                   :rating => "PG", :release_date => "1972-5-30",
+    # if Movie.where(:title => "The Godfather").empty?
+    #   Movie.create(:title => "The Godfather",
+    #                :rating => "PG", :release_date => "1972-5-30",
+    #                :director => "Francis Ford Coppoia")
+    # end
+
+    if Movie.where(:title => "The Conversation").empty?
+      Movie.create(:title => "The Conversation",
+                   :rating => "G", :release_date => "1974-5-11",
                    :director => "Francis Ford Coppoia")
     end
     
@@ -35,12 +41,35 @@ RSpec.describe Movie, type: :model do
   end
   
   describe "others_by_same_director method" do
-    it "returns all other movies by the same director"
+    it "returns all other movies by the same director" do
       # TODO(student): implement this test
+      movie = Movie.create(:title => "The Godfather",
+        :rating => "PG", :release_date => "1972-5-30",
+        :director => "Francis Ford Coppoia")
+
+      titleList = []
+      Movie.search_movies_by_director(movie.id).each{ |m| titleList << m.title}
+      expect(titleList).to eq(['Apocalypse Now', 'The Conversation'])
+      
+      Movie.find_by(:title => "The Godfather").destroy
+    end
+
+
+    it "does not return movies by other directors" do 
+      # TODO(student): implement this test
+      movie = Movie.create(:title => "The Godfather",
+        :rating => "PG", :release_date => "1972-5-30",
+        :director => "Francis Ford Coppoia")
+
+      titleList = []
+      Movie.search_movies_by_director(movie.id).each{ |m| titleList << m.title}
+      expect(titleList).to_not include(['The Green Mile'])
+      
+      Movie.find_by(:title => "The Godfather").destroy
+    end
     
-    it "does not return movies by other directors"
-      # TODO(student): implement this test
   end
+
 end
 
 
