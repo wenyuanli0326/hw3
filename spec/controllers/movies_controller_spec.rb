@@ -8,11 +8,52 @@ RSpec.describe MoviesController, type: :controller do
     end
     
     # TODO(student): add more movies to use for testing
+    if Movie.where(:title => "The Shawshank Redemption").empty?
+      Movie.create(:title => "The Shawshank Redemption",
+                   :rating => "PG", :release_date => "1994-11-07",
+                   :director => "Frank Darabont")
+    end
+    
+    if Movie.where(:title => "The Green Mile").empty?
+      Movie.create(:title => "The Green Mile",
+                   :rating => "G", :release_date => "1999-3-10",
+                   :director => "Frank Darabont")
+    end
+    
+    # if Movie.where(:title => "The Godfather").empty?
+    #   Movie.create(:title => "The Godfather",
+    #                :rating => "PG", :release_date => "1972-5-30",
+    #                :director => "Francis Ford Coppoia")
+    # end
+    
+    if Movie.where(:title => "Apocalypse Now").empty?
+      Movie.create(:title => "Apocalypse Now",
+                   :rating => "G", :release_date => "1979-10-08",
+                   :director => "Francis Ford Coppoia")
+    end
+    
   end
   
   describe "when trying to find movies by the same director" do
-    it "returns a valid collection when a valid director is present"
+    it "returns a valid collection when a valid director is present" do
       # TODO(student): implement this test
+      # get :show_by_director, params:  {:movie => {:title => "The Godfather",
+      #                           :rating => "PG", :release_date => "1972-5-30",
+      #                           :director => "Francis Ford Coppoia"}}
+      # expect(response).to redirect_to find_same_director_path
+      # expect(assigns(:movies_with_same_director).title).to eq('Apocalypse Now')
+
+      movie = Movie.create(:title => "The Godfather",
+        :rating => "PG", :release_date => "1972-5-30",
+        :director => "Francis Ford Coppoia")
+      get :show_by_director, params: { id: movie.id, movie: movie }
+      #expect(response).to redirect_to find_same_director_path
+      # expect([m.title for m in assigns(:movies_with_same_director){}]).to eq('Apocalypse Now')
+      titleList = []
+      assigns(:movies_with_same_director).each{ |m| titleList << m.title}
+      expect(titleList).to eq(['Apocalypse Now'])
+      Movie.find_by(:title => "The Godfather").destroy
+    end
     
     it "redirects to index with a warning when no director is present"
       # TODO(student): implement this test
@@ -47,7 +88,7 @@ RSpec.describe MoviesController, type: :controller do
                            rating: 'PG-13', release_date: '2023-12-17')
       get :update, params: { id: movie.id, movie: { director: 'Not Nick!' } }
 
-      expect(assigns(:movie).direcor).to eq('Not Nick!')
+      expect(assigns(:movie).director).to eq('Not Nick!')
       movie.destroy
     end
   end
