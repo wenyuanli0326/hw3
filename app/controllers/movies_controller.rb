@@ -47,13 +47,13 @@ class MoviesController < ApplicationController
         #director: @movie.director).where.not(id: @movie.id)
 #        @movies = Movie.find_with_same_director(@movie.id)
         
-        if @movies_with_same_director == nil or @movies_with_same_director.empty?
-            flash[:notice] = "Sorry, no movies with same director."
-            redirect_to movies_path
-        else
-            #redirect_to find_same_director_path
+        # if @movies_with_same_director == nil or @movies_with_same_director.empty?
+        #     flash[:notice] = "Sorry, no movies with same director."
+        #     redirect_to movies_path
+        # else
+        #     #redirect_to find_same_director_path
             
-        end
+        # end
     else
         flash[:notice] = "Sorry, this movie does not have a director."
         redirect_to movies_path

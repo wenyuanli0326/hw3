@@ -33,6 +33,34 @@ RSpec.describe MoviesController, type: :controller do
     end
     
   end
+
+  describe "Test the get :show function" do 
+
+    movie = Movie.create(:title => "The Godfather",
+        :rating => "PG", :release_date => "1972-5-30",
+        :director => "Francis Ford Coppoia")
+
+    it "get the correct movie to @movie by using id" do 
+      get :show, params: {id: movie.id} 
+    end
+
+    it "render the show page" do 
+      get :show, params: {id: movie.id}
+      expect(response).to render_template(:show)
+    end
+
+    Movie.find_by(:title => "The Godfather").destroy
+    #movie.destroy  #this does not work
+  end
+
+  describe "Test the get :index function" do 
+    it "render the show page (show html)" do 
+      get :index #, params: {}
+      expect(response).to render_template(:index)
+    end
+  end
+
+
   
   describe "when trying to find movies by the same director" do
     it "returns a valid collection when a valid director is present" do
@@ -75,6 +103,19 @@ RSpec.describe MoviesController, type: :controller do
       Movie.find_by(:title => "Toucan Play This Game").destroy
     end
   end
+
+
+  describe 'edit' do 
+    it "redirects to the edit page" do 
+      movie = Movie.create(title: 'Outfoxed!', director: 'Nick Mecklenburg',
+                           rating: 'PG-13', release_date: '2023-12-17')
+      get :edit, params: { id: movie.id }
+      expect(response).to render_template(:edit)
+      movie.destroy
+    end
+
+  end
+
   
   describe 'updates' do
     it "redirects to the movie details page and flashes a notice" do
@@ -99,5 +140,19 @@ RSpec.describe MoviesController, type: :controller do
       movie.destroy
     end
   end
+
+  describe 'destroy' do 
+    it "actually delete the movie" do 
+        
+      movie = Movie.create(title: 'Outfoxed!', director: 'Nick Mecklenburg',
+          rating: 'PG-13', release_date: '2023-12-17')
+      expect{delete :destroy, params: { id: movie.id }
+                }.to change(Movie, :count).by(-1)
+      expect(flash[:notice]).to match(/Movie 'Outfoxed!' deleted./)
+      expect(response).to redirect_to movies_path
+
+    end
+  end
+
 end
 
