@@ -14,21 +14,21 @@ Background: movies in database
   | THX-1138     | R      | George Lucas |   1971-03-11 |
 
 Scenario: add director to existing movie
-  When I go to the edit page for "Alien"
+  When I visit the edit page for "Alien"
   And  I fill in "Director" with "Ridley Scott"
   And  I press "Update Movie Info"
   Then the director of "Alien" should be "Ridley Scott"
 
 Scenario: find movie with same director
-  Given I am on the details page for "Star Wars"
+  Given I am now on the details page for "Star Wars"
   When  I follow "Find Movies With Same Director"
-  Then  I should be on the Similar Movies page for "Star Wars"
+  Then  I should be now on the Similar Movies page for "Star Wars"
   And   I should see "THX-1138"
   But   I should not see "Blade Runner"
 
 Scenario: can't find similar movies if we don't know director (sad path)
-  Given I am on the details page for "Alien"
+  Given I am now on the details page for "Alien"
   Then  I should not see "Ridley Scott"
   When  I follow "Find Movies With Same Director"
   Then  I should be on the home page
-  And   I should see "'Alien' has no director info"
+  And   I should now see "'Alien' has no director info"

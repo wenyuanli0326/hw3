@@ -24,3 +24,35 @@ Then(/I should see all the movies/) do
     step %(I should see "#{movie.title}")
   end
 end
+
+
+When("I visit the edit page for {string}") do |title|
+  movie = Movie.find_by(title: title)
+  visit edit_movie_path(movie)
+end
+
+Then("the director of {string} should be {string}") do |title, director|
+  movie = Movie.find_by(title: title)
+  expect(movie.director).to eq(director)
+end
+
+# Scenario: find movie with same director
+#   Given I am on the details page for "Star Wars"
+#   When  I follow "Find Movies With Same Director"
+#   Then  I should be on the Similar Movies page for "Star Wars"
+#   And   I should see "THX-1138"
+#   But   I should not see "Blade Runner"
+
+When("I am now on the details page for {string}") do |title|
+  movie = Movie.find_by(title: title)
+  visit movie_path(movie)
+end
+
+Then("I should be now on the Similar Movies page for {string}") do |title|
+  movie = Movie.find_by(title: title)
+  visit find_same_director_path(movie)
+end
+
+Then(/^I should now see "'(.+)' has no director info"$/) do |title|
+  expect(page).to have_content("#{title} has no director info")
+end

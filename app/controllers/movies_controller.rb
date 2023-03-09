@@ -56,7 +56,7 @@ class MoviesController < ApplicationController
 
     # end
     else
-      flash[:notice] = 'Sorry, this movie does not have a director.'
+      flash[:notice] = "#{@movie.title} has no director info"
       redirect_to movies_path
     end
   end

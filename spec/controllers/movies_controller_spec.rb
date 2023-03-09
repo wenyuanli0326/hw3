@@ -87,7 +87,7 @@ RSpec.describe MoviesController, type: :controller do
                            rating: 'PG', release_date: '1972-5-30')
       get :show_by_director, params: { id: movie.id, movie: }
       expect(response).to redirect_to movies_path
-      expect(flash[:notice]).to match(/Sorry, this movie does not have a director./)
+      expect(flash[:notice]).to match(/noDirectorTest has no director info/)
       Movie.find_by(title: 'noDirectorTest').destroy
     end
   end
