@@ -48,9 +48,9 @@ RSpec.describe Movie, type: :model do
                                      rating: 'PG', release_date: '1972-5-30',
                                      director: 'Francis Ford Coppoia')
 
-      titleList = []
-      described_class.search_movies_by_director(movie.id).each { |m| titleList << m.title }
-      expect(titleList).to eq(['Apocalypse Now', 'The Conversation'])
+      title_list = []
+      described_class.search_movies_by_director(movie.id).each { |m| title_list << m.title }
+      expect(title_list).to eq(['Apocalypse Now', 'The Conversation'])
 
       described_class.find_by(title: 'The Godfather').destroy
     end
@@ -60,11 +60,9 @@ RSpec.describe Movie, type: :model do
       movie = described_class.create(title: 'The Godfather',
                                      rating: 'PG', release_date: '1972-5-30',
                                      director: 'Francis Ford Coppoia')
-
-      titleList = []
-      described_class.search_movies_by_director(movie.id).each { |m| titleList << m.title }
-      expect(titleList).not_to include(['The Green Mile'])
-
+      title_list = []
+      described_class.search_movies_by_director(movie.id).each { |m| title_list << m.title }
+      expect(title_list).not_to include(['The Green Mile'])
       described_class.find_by(title: 'The Godfather').destroy
     end
   end

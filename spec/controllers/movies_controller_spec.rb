@@ -63,21 +63,14 @@ RSpec.describe MoviesController, type: :controller do
   describe 'when trying to find movies by the same director' do
     it 'returns a valid collection when a valid director is present' do
       # TODO(student): implement this test
-      # get :show_by_director, params:  {:movie => {:title => "The Godfather",
-      #                           :rating => "PG", :release_date => "1972-5-30",
-      #                           :director => "Francis Ford Coppoia"}}
-      # expect(response).to redirect_to find_same_director_path
-      # expect(assigns(:movies_with_same_director).title).to eq('Apocalypse Now')
-
       movie = Movie.create(title: 'The Godfather',
                            rating: 'PG', release_date: '1972-5-30',
                            director: 'Francis Ford Coppoia')
       get :show_by_director, params: { id: movie.id, movie: }
-      # expect(response).to redirect_to find_same_director_path
-      # expect([m.title for m in assigns(:movies_with_same_director){}]).to eq('Apocalypse Now')
-      titleList = []
-      assigns(:movies_with_same_director).each { |m| titleList << m.title }
-      expect(titleList).to eq(['Apocalypse Now', 'The Conversation'])
+
+      title_list = []
+      assigns(:movies_with_same_director).each { |m| title_list << m.title }
+      expect(title_list).to eq(['Apocalypse Now', 'The Conversation'])
       Movie.find_by(title: 'The Godfather').destroy
     end
 
@@ -116,10 +109,11 @@ RSpec.describe MoviesController, type: :controller do
     it 'redirects to the movie details page and flashes a notice' do
       movie = Movie.create(title: 'Outfoxed!', director: 'Nick Mecklenburg',
                            rating: 'PG-13', release_date: '2023-12-17')
-      get :update, params: { id: movie.id, movie: { description: 'Critics rave about this epic new thriller. Watch as main characters Armando Fox ' \
-                                                                 'and Michael Ball, alongside their team of TAs, battle against the challenges of ' \
-                                                                 'a COVID-19-induced virtual semester, a labyrinthian and disconnected assignment ' \
-                                                                 'stack, and the ultimate betrayal from their once-trusted ally: Codio exams.' } }
+      get :update, params: { id: movie.id, movie:
+        { description: 'Critics rave about this epic new thriller. Watch as main characters Armando Fox ' \
+                        'and Michael Ball, alongside their team of TAs, battle against the challenges of ' \
+                        'a COVID-19-induced virtual semester, a labyrinthian and disconnected assignment ' \
+                        'stack, and the ultimate betrayal from their once-trusted ally: Codio exams.' } }
 
       expect(response).to redirect_to movie_path(movie)
       expect(flash[:notice]).to match(/Outfoxed! was successfully updated./)

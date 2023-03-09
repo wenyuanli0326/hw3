@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# controller for movie under this application
 class MoviesController < ApplicationController
   def show
     id = params[:id] # retrieve movie ID from URI route

@@ -25,6 +25,7 @@ require 'cgi'
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'support', 'paths'))
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'support', 'selectors'))
 
+# check the scope and the collection of helper functions
 module WithinHelpers
   def with_scope(locator, &block)
     locator ? within(*selector_for(locator), &block) : yield

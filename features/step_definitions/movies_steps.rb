@@ -25,14 +25,13 @@ Then(/I should see all the movies/) do
   end
 end
 
-
-When("I visit the edit page for {string}") do |title|
-  movie = Movie.find_by(title: title)
+When('I visit the edit page for {string}') do |title|
+  movie = Movie.find_by(title:)
   visit edit_movie_path(movie)
 end
 
-Then("the director of {string} should be {string}") do |title, director|
-  movie = Movie.find_by(title: title)
+Then('the director of {string} should be {string}') do |title, director|
+  movie = Movie.find_by(title:)
   expect(movie.director).to eq(director)
 end
 
@@ -43,13 +42,13 @@ end
 #   And   I should see "THX-1138"
 #   But   I should not see "Blade Runner"
 
-When("I am now on the details page for {string}") do |title|
-  movie = Movie.find_by(title: title)
+When('I am now on the details page for {string}') do |title|
+  movie = Movie.find_by(title:)
   visit movie_path(movie)
 end
 
-Then("I should be now on the Similar Movies page for {string}") do |title|
-  movie = Movie.find_by(title: title)
+Then('I should be now on the Similar Movies page for {string}') do |title|
+  movie = Movie.find_by(title:)
   visit find_same_director_path(movie)
 end
 
